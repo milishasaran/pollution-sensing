@@ -1,0 +1,43 @@
+#include<LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);
+
+int smoke = A0;
+int noise= A1;
+
+void setup()
+{
+pinMode(smoke, INPUT);
+pinMode(noise, INPUT);
+Serial.begin(9600);
+lcd.begin(16,2);
+lcd.print("Hello");
+delay(2000);
+}
+
+void loop() 
+{
+
+int analogSensor1 = analogRead(smoke);
+int analogSensor2 = analogRead(noise);
+float analogSensor3 =  (analogSensor1)/13.1;
+float analogSensor4 =  ((analogSensor2)+2)/10.5;
+
+Serial.print("Smoke = ");
+Serial.println(analogSensor3);
+Serial.print("Noise = ");
+Serial.println(analogSensor4);
+
+//Display the values in lcd
+lcd.clear();
+lcd.setCursor(2, 0);
+lcd.print("Smoke ");
+lcd.print(analogSensor3);
+lcd.setCursor(2, 1);
+lcd.print("Noise ");
+lcd.print(analogSensor4);
+
+
+delay(1000);
+
+
+}
