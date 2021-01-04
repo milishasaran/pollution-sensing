@@ -1,0 +1,85 @@
+#include <ESP8266WiFi.h>;
+
+#include <WiFiClient.h>;
+
+#include <ThingSpeak.h>;
+
+float smoke, noise;
+const char* ssid = "Milisha"; //Your Network SSID
+
+const char* password = "Milisha123"; //Your Network Password
+
+//int val;
+
+//int NOISE_SENSOR = 5;
+//int SMOKE_SENSOR = 0;
+//int led_RED = 4;
+//int led_GREEN = 16;
+//int val; 
+
+
+WiFiClient client;
+
+unsigned long myChannelNumber = 1230406; //Your Channel Number (Without Brackets)
+
+const char * myWriteAPIKey = "DY7YSEF2NAHS2I34"; //Your Write API Key
+
+void setup()
+
+{
+
+Serial.begin(9600);
+//pinMode(SMOKE_SENSOR, INPUT);
+//pinMode(led_RED, OUTPUT);
+//pinMode(led_GREEN, OUTPUT);
+//
+//digitalWrite(led_RED,LOW);
+//digitalWrite(led_GREEN,LOW);
+
+
+delay(10);
+
+// Connect to WiFi network
+Serial.println("Connecting to ");
+       Serial.println(ssid);
+       WiFi.begin(ssid, password);
+ 
+      while (WiFi.status() != WL_CONNECTED) 
+     {
+            delay(500);
+            Serial.print(".");
+     }
+      Serial.println("");
+      Serial.println("WiFi connected");
+
+
+
+ThingSpeak.begin(client);
+
+}
+
+
+
+void loop()
+
+{
+while (Serial.available()==0)  {
+  
+  }
+  smoke=Serial.parseFloat();
+  while (Serial.available()==0)  {
+  
+  }
+  noise=Serial.parseFloat();
+  Serial.print("Smoke = ");
+  Serial.println(smoke); //Print data on Serial Monitor
+  Serial.print("Noise = ");
+  Serial.println(noise);
+
+ThingSpeak.writeField(myChannelNumber, 1,smoke, myWriteAPIKey);
+
+delay(5000);
+ThingSpeak.writeField(myChannelNumber, 2,noise, myWriteAPIKey);
+delay(5000);
+
+}
